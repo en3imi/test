@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة القبول الموحد - وزارة التربية والتعليم والتعليم العالي الأردنية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* هوية وطنية وألوان مستوحاة من الجامعات الأردنية (كحلي ملكي + أخضر/ذهبي + لمسات JUST الرصينة) */
+      --primary: #0b2545;
+      --primary-light: #134074;
+      --accent: #c59b27;
+      --accent-hover: #b0891d;
+      --just-green: #006837;
+      --just-maroon: #73131e;
+      --bg-light: #f4f7fb;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(11, 37, 69, 0.08);
+      --shadow-lg: 0 10px 25px rgba(11, 37, 69, 0.12);
+      --radius: 12px;
+      --transition: all 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* شريط علوي رسمي */
+    .top-bar {
+      background: #061527;
+      color: #cbd5e1;
+      font-size: 0.85rem;
+      padding: 6px 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--accent);
+    }
+    .top-bar .info-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-inline-end: 15px;
+    }
+    .top-bar a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+    .top-bar a:hover {
+      text-decoration: underline;
+    }
+
+    /* الترويسة الرئيسية */
+    header {
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .crown-emblem {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #0b2545 0%, #134074 100%);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      border: 2px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(197, 155, 39, 0.3);
+    }
+    .brand-titles h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .brand-titles p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #eef2ff;
+      color: var(--primary-light);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid #c7d2fe;
+    }
+
+    /* مساحة التنبيه التجريبي */
+    .demo-ribbon {
+      background: linear-gradient(90deg, #1e3a8a, #0b2545);
+      color: #fff;
+      padding: 0.6rem 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .demo-ribbon .tag {
+      background: var(--accent);
+      color: #061527;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    /* الحاوية الرئيسية للمحتوى */
+    .main-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+      flex: 1;
+    }
+
+    /* شريط خطوات التقديم (Stepper) */
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 2.2rem;
+      background: #fff;
+      padding: 1.25rem 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 5%;
+      left: 5%;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      padding: 0 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      transition: var(--transition);
+    }
+    .step-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+      transition: var(--transition);
+    }
+    .step-item.active .step-num {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(19, 64, 116, 0.15);
+    }
+    .step-item.active .step-label {
+      color: var(--primary);
+    }
+    .step-item.completed .step-num {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    .step-item.completed .step-label {
+      color: var(--success);
+    }
+
+    /* بطاقات الواجهة */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      padding: 1.2rem 1.8rem;
+      background: #fafcff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-body {
+      padding: 2rem 1.8rem;
+    }
+
+    /* الحقول والمدخلات */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-control {
+      padding: 11px 14px;
+      font-size: 0.95rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      transition: var(--transition);
+      background-color: #fff;
+    }
+    .form-control:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(19, 64, 116, 0.12);
+    }
+    .form-control[readonly] {
+      background-color: #f8fafc;
+      color: #475569;
+      cursor: not-allowed;
+    }
+    .helper-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* أزرار الإجراءات */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: #061527;
+    }
+    .btn-accent:hover {
+      background: var(--accent-hover);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+    }
+    .btn-outline:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+    .btn-just {
+      background: #006837;
+      color: #ffffff;
+      border: 1px solid #00522c;
+    }
+    .btn-just:hover {
+      background: #00522c;
+      color: #ffffff;
+    }
+
+    /* بطاقة التوجيهي المسترجعة */
+    .student-badge-card {
+      background: linear-gradient(135deg, #0b2545 0%, #1e3a8a 100%);
+      color: #fff;
+      border-radius: 10px;
+      padding: 1.4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .student-badge-card::after {
+      content: '\f19d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: -20px;
+      bottom: -20px;
+      font-size: 8rem;
+      color: rgba(255, 255, 255, 0.04);
+      pointer-events: none;
+    }
+    .badge-field span {
+      display: block;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      margin-bottom: 3px;
+    }
+    .badge-field strong {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .badge-field.score strong {
+      font-size: 1.5rem;
+      color: #fde047;
+    }
+
+    /* تبويب التخصصات والجامعات */
+    .filter-section {
+      background: #f8fafc;
+      padding: 1.2rem;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+    @media (max-width: 768px) {
+      .filter-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* قائمة التخصصات */
+    .majors-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .major-card {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+    }
+    .major-card:hover {
+      border-color: #93c5fd;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .major-card.just-featured {
+      border-right: 5px solid var(--just-green);
+    }
+    .major-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .univ-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      display: inline-block;
+    }
+    .univ-tag.just-tag {
+      background: #dcfce7;
+      color: var(--just-green);
+      font-weight: 800;
+    }
+    .min-rate {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #dc2626;
+      background: #fee2e2;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .major-title {
+      font-size: 1.05rem;
+      font-weight: 750;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .major-faculty {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .major-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px dashed #e2e8f0;
+      margin-top: 10px;
+    }
+    .hour-price {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    /* سلة الرغبات المختارة */
+    .selected-wishes-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .selected-wishes-table th, .selected-wishes-table td {
+      padding: 12px 14px;
+      text-align: right;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .selected-wishes-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 0.88rem;
+    }
+    .wish-order-badge {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      transition: var(--transition);
+    }
+    .action-btn:hover {
+      transform: scale(1.15);
+    }
+    .order-actions {
+      display: inline-flex;
+      gap: 4px;
+    }
+    .btn-move {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 3px 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: #475569;
+    }
+    .btn-move:hover {
+      background: #e2e8f0;
+    }
+
+    /* صندوق الربط البرمجي التوضيحي (Mock API Payload) */
+    .api-preview-box {
+      background: #0f172a;
+      color: #38bdf8;
+      border-radius: 8px;
+      padding: 1.2rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      margin-top: 1.5rem;
+      border: 1px solid #334155;
+    }
+
+    /* نافذة النجاح والتأكيد */
+    .success-receipt {
+      background: #ffffff;
+      border: 2px dashed #10b981;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      max-width: 650px;
+      margin: 1.5rem auto;
+    }
+    .receipt-icon {
+      width: 70px;
+      height: 70px;
+      background: #d1fae5;
+      color: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 1rem;
+    }
+
+    /* تذييل الصفحة */
+    footer {
+      background: #0b2545;
+      color: #cbd5e1;
+      margin-top: auto;
+      border-top: 3px solid var(--accent);
+      padding: 2rem 1.5rem 1.2rem;
+      font-size: 0.88rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .footer-col h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-bottom: 6px;
+    }
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+    .footer-col ul li a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-col ul li a:hover {
+      color: #fff;
+      padding-inline-start: 4px;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1rem;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 0.82rem;
+    }
+
+    /* رسائل تنبيهية */
+    .alert-box {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+    .alert-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+    .alert-success {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    /* Modal نافذة تفاصيل التخصص / جامعة العلوم والتكنولوجيا */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 650px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+      background: #0b2545;
+      color: #fff;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 1.5rem;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط علوي للمملكة الأردنية الهاشمية -->
+  <div class="top-bar">
+    <div>
+      <span class="info-item"><i class="fa-solid fa-flag"></i> المملكة الأردنية الهاشمية</span>
+      <span class="info-item"><i class="fa-solid fa-building-columns"></i> وزارة التعليم العالي والبحث العلمي</span>
+    </div>
+    <div>
+      <span class="info-item"><i class="fa-solid fa-headset"></i> الدعم الفني الموحد: 06-5355000</span>
+      <span class="info-item"><a href="https://www.just.edu.jo/ar/Pages/Default.aspx" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> بوابة جامعة العلوم والتكنولوجيا (JUST)</a></span>
+    </div>
+  </div>
+
+  <!-- الترويسة الرئيسية -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="crown-emblem">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="brand-titles">
+          <h1>بوابة القبول الجامعي الموحد لطلبة التوجيهي</h1>
+          <p>واجهة تقديم طلبات الالتحاق بالجامعات الأردنية الرسمية - دورة 2026/2027</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <i class="fa-solid fa-circle-check text-success"></i>
+        <span>النظام جاهز لاستقبال الطلبات</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- شريط توضيحي لطبيعة المنصة التجريبية -->
+  <div class="demo-ribbon">
+    <span class="tag">ديمو تجريبي</span>
+    <span>هذه المنصة واجهة تفاعلية ذكية مصممة للربط مع محرك احتساب النقاط والمفاضلة والخدمات الخلفية التابعة لوزارة التعليم العالي</span>
+  </div>
+
+  <!-- الحاوية الأساسية للمحتوى -->
+  <main class="main-container">
+
+    <!-- شريط تتبع الخطوات -->
+    <div class="stepper">
+      <div class="step-item active" id="step-btn-1" onclick="goToStep(1)">
+        <div class="step-num">1</div>
+        <div class="step-label">بيانات التوجيهي والتحقق</div>
+      </div>
+      <div class="step-item" id="step-btn-2" onclick="goToStep(2)">
+        <div class="step-num">2</div>
+        <div class="step-label">اختيار التخصصات والرغبات</div>
+      </div>
+      <div class="step-item" id="step-btn-3" onclick="goToStep(3)">
+        <div class="step-num">3</div>
+        <div class="step-label">ترتيب الرغبات والمراجعة</div>
+      </div>
+      <div class="step-item" id="step-btn-4" onclick="goToStep(4)">
+        <div class="step-num">4</div>
+        <div class="step-label">إرسال الطلب والتأكيد</div>
+      </div>
+    </div>
+
+    <!-- ==================== الخطوة 1: استعلام وبيانات التوجيهي ==================== -->
+    <div class="step-content" id="step-section-1">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-id-card"></i> الخطوة الأولى: التحقق من بيانات طالب الثانوية العامة (التوجيهي)</h2>
+          <span class="helper-text"><i class="fa-solid fa-lock"></i> ربط مباشر مع قاعدة بيانات الامتحانات</span>
+        </div>
+        <div class="card-body">
+          <div class="alert-box alert-info">
+            <i class="fa-solid fa-circle-info"></i>
+            <div>يرجى إدخال الرقم الوطني ورقم الجلوس المعتمدين في شهادة التوجيهي، سيتم استرجاع معدلك وفئتك تلقائياً للتحقق من الأهلية للقبول الموحد. (ملاحظة تجريبية: يمكنك تجربة الأزرار السريعة لتعبئة بيانات نموذجية).</div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nationalId"><i class="fa-solid fa-address-card"></i> الرقم الوطني (10 أرقام):</label>
+              <input type="text" id="nationalId" class="form-control" placeholder="مثال: 2005123456" maxlength="10" value="2006981245">
+            </div>
+
+            <div class="form-group">
+              <label for="seatNumber"><i class="fa-solid fa-hashtag"></i> رقم الجلوس:</label>
+              <input type="text" id="seatNumber" class="form-control" placeholder="مثال: 184592" value="184920">
+            </div>
+
+            <div class="form-group">
+              <label for="tawjihiStream"><i class="fa-solid fa-book-open"></i> الفرع الدراسي:</label>
+              <select id="tawjihiStream" class="form-control">
+                <option value="علمي" selected>العلمي</option>
+                <option value="أدبي">الأدبي</option>
+                <option value="صناعي">الصناعي</option>
+                <option value="زراعي">الزراعي</option>
+                <option value="فندقي ومنزلي">الفندقي والاقتصاد المنزلي</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="fetchTawjihiData()">
+              <i class="fa-solid fa-magnifying-glass"></i> استعلام والتحقق من النتيجة
+            </button>
+            <button class="btn btn-outline" onclick="loadSampleData('high')">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> تجربة: طالب علمي (معدل 96.4)
+            </button>
+            <button class="btn btn-outline" onclick="loadSampleData('mid')">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> تجربة: طالب علمي/هندسة (معدل 88.5)
+            </button>
+            <button class="btn btn-outline" onclick="loadSampleData('arts')">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> تجربة: طالب أدبي (معدل 82.0)
+            </button>
+          </div>
+
+          <!-- بطاقة النتيجة المسترجعة (تظهر بعد التحقق) -->
+          <div id="studentBadge" class="student-badge-card" style="display: none;">
+            <div class="badge-field">
+              <span>اسم الطالب الرباعي</span>
+              <strong id="badgeName">أحمد محمد عبد الله الخوالدة</strong>
+            </div>
+            <div class="badge-field">
+              <span>الفرع وسنة التخرج</span>
+              <strong id="badgeStream">العلمي - دورة صيفية 2026</strong>
+            </div>
+            <div class="badge-field score">
+              <span>المعدل المعتمد</span>
+              <strong id="badgeScore">96.4%</strong>
+            </div>
+            <div class="badge-field">
+              <span>المحافظة ومدرسة الطالب</span>
+              <strong id="badgeSchool">إربد - مدرسة الملك عبد الله الثاني للتميز</strong>
+            </div>
+            <div class="badge-field">
+              <span>حالة الأهلية المبدئية</span>
+              <strong style="color: #4ade80;"><i class="fa-solid fa-check-double"></i> مؤهل لكافة التخصصات الجامعية</strong>
+            </div>
+          </div>
+
+          <div id="step1Actions" style="margin-top: 2rem; display: none; justify-content: flex-end;">
+            <button class="btn btn-accent" onclick="goToStep(2)">
+              المتابعة لاختيار الرغبات <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== الخطوة 2: استعراض واختيار التخصصات ==================== -->
+    <div class="step-content" id="step-section-2" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-graduation-cap"></i> الخطوة الثانية: استعراض التخصصات واختيار الرغبات</h2>
+          <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">
+            عدد الرغبات المختارة: <span id="wishesCounterBadge" style="background: var(--accent); color: #000; padding: 2px 9px; border-radius: 12px;">0</span> / 30
+          </div>
+        </div>
+        <div class="card-body">
+
+          <!-- فلتر البحث عن الجامعات والتخصصات -->
+          <div class="filter-section">
+            <div class="form-group">
+              <label for="filterSearch"><i class="fa-solid fa-search"></i> بحث بالاسم أو المجال:</label>
+              <input type="text" id="filterSearch" class="form-control" placeholder="مثال: هندسة البرمجيات، طب وجراحة، ذكاء اصطناعي..." oninput="filterMajors()">
+            </div>
+            <div class="form-group">
+              <label for="filterUniv"><i class="fa-solid fa-university"></i> اختر الجامعة:</label>
+              <select id="filterUniv" class="form-control" onchange="filterMajors()">
+                <option value="ALL">جميع الجامعات الحكومية</option>
+                <option value="JUST" selected>جامعة العلوم والتكنولوجيا الأردنية (JUST)</option>
+                <option value="JU">الجامعة الأردنية (عمان)</option>
+                <option value="HU">الجامعة الهاشمية (الزرقاء)</option>
+                <option value="YU">جامعة اليرموك (إربد)</option>
+                <option value="BAU">جامعة البلقاء التطبيقية (السلط)</option>
+                <option value="MUTAH">جامعة مؤتة (الكرك)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-just" style="width: 100%;" onclick="filterJustOnly()">
+                <i class="fa-solid fa-star"></i> تخصصات JUST فقط
+              </button>
+            </div>
+          </div>
+
+          <!-- تنبيه خاص برابط جامعة العلوم والتكنولوجيا -->
+          <div class="alert-box alert-info" style="border-right: 5px solid var(--just-green);">
+            <i class="fa-solid fa-compass"></i>
+            <div>
+              <strong>مرجعية جامعة العلوم والتكنولوجيا الأردنية (JUST):</strong>
+              تضم البوابة تخصصات وكليات جامعة العلوم والتكنولوجيا وفق أحدث بيانات القبول ومعدلات التنافس المعتمدة في كلياتها (الهندسة، تكنولوجيا المعلومات والحاسوب، الطب، الصيدلة، والتمريض). يمكنك زيارة <a href="https://www.just.edu.jo/ar/Pages/Default.aspx" target="_blank" style="color: var(--primary-light); font-weight: 700;">الموقع الرسمي لجامعة JUST</a> للاطلاع على خطط المواد الدراسية.
+            </div>
+          </div>
+
+          <!-- قائمة التخصصات المعروضة -->
+          <div class="majors-list" id="majorsContainer">
+            <!-- يتم تعبئتها بواسطة جافاسكريبت -->
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <button class="btn btn-outline" onclick="goToStep(1)">
+              <i class="fa-solid fa-arrow-right"></i> الرجوع للبيانات
+            </button>
+            <button class="btn btn-accent" onclick="goToStep(3)">
+              الانتقال لترتيب الرغبات (<span id="nextStepCount">0</span> رغبة) <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== الخطوة 3: ترتيب الرغبات والمراجعة ==================== -->
+    <div class="step-content" id="step-section-3" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-list-ol"></i> الخطوة الثالثة: ترتيب الأولويات ومراجعة قائمة الرغبات</h2>
+          <button class="btn btn-outline" style="font-size: 0.82rem; padding: 6px 12px;" onclick="goToStep(2)">
+            <i class="fa-solid fa-plus"></i> إضافة رغبات أخرى
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="alert-box alert-info">
+            <i class="fa-solid fa-circle-question"></i>
+            <div>تقوم الخوارزمية بمفاضلة طلبك حسب أولوية الترتيب أدناه؛ الرغبة رقم (1) هي التي ستحصل على الفرصة التنافسية الأولى. يمكنك إعادة الترتيب بالأسهم (للأعلى وللأسفل) أو إزالة أي رغبة.</div>
+          </div>
+
+          <div id="wishesEmptyNotice" style="text-align: center; padding: 3rem 1rem; color: #94a3b8;">
+            <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; color: #cbd5e1;"></i>
+            <h3>لم تختر أي تخصص حتى الآن!</h3>
+            <p>يرجى العودة إلى الخطوة السابقة واختيار التخصصات التي ترغب بالالتحاق بها.</p>
+            <button class="btn btn-primary" style="margin-top: 1rem;" onclick="goToStep(2)">
+              استعراض واختيار التخصصات
+            </button>
+          </div>
+
+          <div id="wishesTableContainer" style="display: none;">
+            <table class="selected-wishes-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px;">الترتيب</th>
+                  <th>الجامعة</th>
+                  <th>الكلية والتخصص</th>
+                  <th>الحد الأدنى التنافسي</th>
+                  <th>الفرع المطلوب</th>
+                  <th style="width: 140px; text-align: center;">إعادة الترتيب</th>
+                  <th style="width: 60px; text-align: center;">حذف</th>
+                </tr>
+              </thead>
+              <tbody id="wishesTableBody">
+                <!-- تعبئة تفاعلية -->
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 2rem;">
+            <button class="btn btn-outline" onclick="goToStep(2)">
+              <i class="fa-solid fa-arrow-right"></i> الرجوع لاختيار التخصصات
+            </button>
+            <button class="btn btn-primary" id="btnGoToStep4" onclick="goToStep(4)">
+              متابعة للإرسال والربط مع محرك القبول <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== الخطوة 4: الإرسال والتأكيد وتوليد حمولة الربط ==================== -->
+    <div class="step-content" id="step-section-4" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-satellite-dish"></i> الخطوة الرابعة: تأكيد إرسال الطلب ومعاينة حزمة الربط البرمجي (API Payload)</h2>
+          <span class="badge" style="background: #e2e8f0; color: #334155; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">جاهز للتمرير للأنظمة الخلفية</span>
+        </div>
+        <div class="card-body">
+
+          <!-- بطاقة ملخص قبل الاعتماد -->
+          <div id="preSubmitSummary" style="display: block;">
+            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-file-invoice"></i> ملخص الطلب النهائي</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.95rem;">
+                <div><strong>الطالب:</strong> <span id="summaryStudentName">--</span></div>
+                <div><strong>الرقم الوطني:</strong> <span id="summaryNationalId">--</span></div>
+                <div><strong>معدل التوجيهي:</strong> <span id="summaryScore">--</span></div>
+                <div><strong>الفرع:</strong> <span id="summaryStream">--</span></div>
+                <div><strong>إجمالي الرغبات:</strong> <span id="summaryWishesCount" style="color: var(--primary); font-weight: 800;">0</span> رغبة</div>
+              </div>
+            </div>
+
+            <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin-bottom: 1.5rem;">
+              عند الضغط على <strong>"تأكيد وإرسال الطلب نهائياً"</strong>، تقوم هذه الواجهة بتوليد حزمة بيانات JSON القياسية وإرسالها إلى الخوادم المركزية (Backend Engine) التي تتولى تدقيق شروط القبول، واحتساب النقاط، وإصدار إشعار القبول الرسمي.
+            </p>
+
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn btn-success" style="font-size: 1.05rem; padding: 12px 28px;" onclick="submitFinalApplication()">
+                <i class="fa-solid fa-paper-plane"></i> تأكيد وإرسال الطلب نهائياً
+              </button>
+              <button class="btn btn-outline" onclick="goToStep(3)">
+                <i class="fa-solid fa-arrow-right"></i> تعديل الترتيب
+              </button>
+            </div>
+          </div>
+
+          <!-- شاشة بعد الإرسال الناجح -->
+          <div id="postSubmitArea" style="display: none;">
+            <div class="success-receipt">
+              <div class="receipt-icon"><i class="fa-solid fa-check"></i></div>
+              <h2 style="color: #065f46; font-size: 1.5rem; margin-bottom: 8px;">تم استلام طلب الالتحاق بنجاح!</h2>
+              <p style="color: #475569; margin-bottom: 1rem;">تم إرسال الرغبات إلى وحدة تنسيق القبول الموحد بنجاح، ورقم إيصال المعاملة هو:</p>
+              <div style="background: #f1f5f9; padding: 10px 20px; font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; color: var(--primary); display: inline-block; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 1rem;" id="receiptNumber">
+                JOR-2026-981245
+              </div>
+              <p style="font-size: 0.85rem; color: #64748b;">
+                تاريخ وتوقيت المعاملة: <span id="submissionTimestamp"></span>
+              </p>
+              <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="window.print()">
+                  <i class="fa-solid fa-print"></i> طباعة إشعار التقديم
+                </button>
+                <button class="btn btn-primary" onclick="resetDemo()">
+                  <i class="fa-solid fa-rotate-right"></i> بدء تقديم جديد (ديمو)
+                </button>
+              </div>
+            </div>
+
+            <!-- تفاصيل الـ API Payload الذي يرسل للمنصة الخلفية -->
+            <div style="margin-top: 2rem;">
+              <h3 style="font-size: 1rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-code"></i> بيانات الربط البرمجي المُرسلة للمنصة الخلفية (REST API Payload Contract):
+              </h3>
+              <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">
+                هذا هو الكائن البرمجي الجاهز للاستهلاك بواسطة خوادم معالجة القبول والحسابات الفنية:
+              </p>
+              <pre class="api-preview-box" id="jsonPayloadDisplay"></pre>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- نافذة منبثقة لتفاصيل التخصص والكلية -->
+  <div class="modal-backdrop" id="majorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" style="font-size: 1.15rem; font-weight: 700;">تفاصيل التخصص</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- محتوى ديناميكي -->
+      </div>
+    </div>
+  </div>
+
+  <!-- التذييل الرسمي -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>المملكة الأردنية الهاشمية</h4>
+        <p style="line-height: 1.8; color: #94a3b8;">
+          وحدة تنسيق القبول الموحد التابعة لمجلس التعليم العالي. البوابة الإلكترونية الرسمية لخدمة خريجي الثانوية العامة الأردنية والشهادات المعادلة.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="https://www.just.edu.jo/ar/Pages/Default.aspx" target="_blank"><i class="fa-solid fa-link"></i> جامعة العلوم والتكنولوجيا الأردنية (JUST)</a></li>
+          <li><a href="https://www.mohe.gov.jo" target="_blank"><i class="fa-solid fa-link"></i> وزارة التعليم العالي والبحث العلمي</a></li>
+          <li><a href="https://www.admhec.gov.jo" target="_blank"><i class="fa-solid fa-link"></i> وحدة تنسيق القبول الموحد</a></li>
+          <li><a href="http://www.tawjihi.jo" target="_blank"><i class="fa-solid fa-link"></i> منظومة نتائج التوجيهي</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>المساعدة والدعم</h4>
+        <ul>
+          <li><i class="fa-solid fa-phone" style="margin-left: 8px;"></i> الخط الساخن: 06-5355000</li>
+          <li><i class="fa-solid fa-envelope" style="margin-left: 8px;"></i> البريد: admission@admhec.gov.jo</li>
+          <li><i class="fa-solid fa-location-dot" style="margin-left: 8px;"></i> عمان - الجبيهة - شارع الملكة رانيا</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      جميع الحقوق محفوظة &copy; 2026 - المملكة الأردنية الهاشمية - بوابة القبول الجامعي الموحد (واجهة تجريبية ديمو للعرض).
+    </div>
+  </footer>
+
+  <!-- ملف المنطق البرمجي وبيانات الديمو التفاعلية -->
+  <script>
+    // قاعدة بيانات التخصصات المتوفرة (مع التركيز الخاص على جامعة العلوم والتكنولوجيا JUST وأبرز الجامعات الرسمية)
+    const MAJORS_DATABASE = [
+      // جامعة العلوم والتكنولوجيا الأردنية (JUST) - إربد (جوهرة الجامعات الأردنية)
+      {
+        id: "JUST-ENG-01",
+        code: "JUST101",
+        title: "هندسة البرمجيات",
+        faculty: "كلية تكنولوجيا الحاسوب والمعلومات",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 88.0,
+        allowedStream: ["علمي", "صناعي"],
+        creditHours: 132,
+        hourPriceJOD: 45,
+        isJustFeatured: true,
+        description: "يؤهل الطالب لتصميم وتطوير المنظومات البرمجية المعقدة، والأنظمة الموزعة، والحوسبة السحابية مع بنية تحتية متقدمة في مختبرات JUST المجهزة بأحدث التقنيات العالمية.",
+        justUrl: "https://www.just.edu.jo/Faculties/CIT/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-ENG-02",
+        code: "JUST102",
+        title: "الذكاء الاصطناعي وعلم البيانات",
+        faculty: "كلية تكنولوجيا الحاسوب والمعلومات",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 90.0,
+        allowedStream: ["علمي"],
+        creditHours: 132,
+        hourPriceJOD: 50,
+        isJustFeatured: true,
+        description: "تخصص مستقبلي يركز على خوارزميات التعلم الآلي، والشبكات العصبية، وتحليل البيانات الضخمة (Big Data) بإشراف كادر تدريسي متميز ومصنف عالمياً.",
+        justUrl: "https://www.just.edu.jo/Faculties/CIT/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-MED-01",
+        code: "JUST201",
+        title: "دكتور في الطب البشري (MD)",
+        faculty: "كلية الطب البشري",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 97.2,
+        allowedStream: ["علمي"],
+        creditHours: 257,
+        hourPriceJOD: 85,
+        isJustFeatured: true,
+        description: "أحد أرقى برامج الطب في الشرق الأوسط، التدريب السريري العملي يتم في مستشفى الملك المؤسس عبد الله الجامعي الصرح الطبي الأكبر في شمال المملكة.",
+        justUrl: "https://www.just.edu.jo/Faculties/Medicine/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-ENG-03",
+        code: "JUST301",
+        title: "هندسة الحاسوب والشبكات",
+        faculty: "كلية الهندسة",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 89.5,
+        allowedStream: ["علمي", "صناعي"],
+        creditHours: 160,
+        hourPriceJOD: 45,
+        isJustFeatured: true,
+        description: "يدمج بين العتاد الصلب (Hardware) والشبكات والأنظمة المدمجة وإنترنت الأشياء مع اعتراف واعتماد عالمي كامل (ABET).",
+        justUrl: "https://www.just.edu.jo/Faculties/Engineering/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-ENG-04",
+        code: "JUST302",
+        title: "الهندسة الميكانيكية / الميكاترونكس",
+        faculty: "كلية الهندسة",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 87.0,
+        allowedStream: ["علمي", "صناعي"],
+        creditHours: 160,
+        hourPriceJOD: 40,
+        isJustFeatured: true,
+        description: "دراسة وتطبيق أنظمة التحكم الذكي والأذرع الروبوتية والتصميم الميكانيكي الدقيق في مختبرات الابتكار والتميز بالجامعة.",
+        justUrl: "https://www.just.edu.jo/Faculties/Engineering/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-PHARM-01",
+        code: "JUST401",
+        title: "دكتور صيدلة (PharmD)",
+        faculty: "كلية الصيدلة",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 94.0,
+        allowedStream: ["علمي"],
+        creditHours: 216,
+        hourPriceJOD: 60,
+        isJustFeatured: true,
+        description: "برنامج الصيدلة السريرية المتقدم المعتمد من هيئة الاعتماد الأمريكية (ACPE)، والذي يتيح ممارسة الاستشارات الدوائية والسريرية بالمستشفيات.",
+        justUrl: "https://www.just.edu.jo/Faculties/Pharmacy/Pages/Default.aspx"
+      },
+      {
+        id: "JUST-NUR-01",
+        code: "JUST501",
+        title: "علوم التمريض",
+        faculty: "كلية التمريض",
+        univId: "JUST",
+        univName: "جامعة العلوم والتكنولوجيا الأردنية (JUST)",
+        minRate: 83.0,
+        allowedStream: ["علمي"],
+        creditHours: 136,
+        hourPriceJOD: 30,
+        isJustFeatured: true,
+        description: "مركز معتمد لمنظمة الصحة العالمية لتدريب وتأهيل الكوادر التمريضية وفق أرقى المعايير الطبية الدولية.",
+        justUrl: "https://www.just.edu.jo/Faculties/Nursing/Pages/Default.aspx"
+      },
+
+      // الجامعة الأردنية (JU) - العاصمة عمان
+      {
+        id: "JU-ENG-01",
+        code: "JU101",
+        title: "علم الحاسوب (Computer Science)",
+        faculty: "كلية الملك عبد الله الثاني لتكنولوجيا المعلومات",
+        univId: "JU",
+        univName: "الجامعة الأردنية (JU)",
+        minRate: 88.5,
+        allowedStream: ["علمي"],
+        creditHours: 132,
+        hourPriceJOD: 45,
+        isJustFeatured: false,
+        description: "البرنامج العريق الذي يغطي الخوارزميات، البرمجة المتقدمة، وأمن المعلومات في أم الجامعات الأردنية.",
+        justUrl: "http://ju.edu.jo"
+      },
+      {
+        id: "JU-MED-01",
+        code: "JU201",
+        title: "طب الأسنان وجراحتها",
+        faculty: "كلية طب الأسنان",
+        univId: "JU",
+        univName: "الجامعة الأردنية (JU)",
+        minRate: 96.5,
+        allowedStream: ["علمي"],
+        creditHours: 198,
+        hourPriceJOD: 75,
+        isJustFeatured: false,
+        description: "دراسة وتدريب سريري متكامل في مستشفى الجامعة الأردنية في تخصصات التقويم والجراحة وطب الأسنان التجميلي.",
+        justUrl: "http://ju.edu.jo"
+      },
+      {
+        id: "JU-LAW-01",
+        code: "JU301",
+        title: "الحقوق والقانون",
+        faculty: "كلية الحقوق",
+        univId: "JU",
+        univName: "الجامعة الأردنية (JU)",
+        minRate: 85.0,
+        allowedStream: ["علمي", "أدبي"],
+        creditHours: 138,
+        hourPriceJOD: 30,
+        isJustFeatured: false,
+        description: "دراسة التشريعات الدستورية والتجارية والمدنية والجنائية والاتفاقيات الدولية.",
+        justUrl: "http://ju.edu.jo"
+      },
+      {
+        id: "JU-BUS-01",
+        code: "JU401",
+        title: "إدارة الأعمال والريادة",
+        faculty: "كلية الأعمال",
+        univId: "JU",
+        univName: "الجامعة الأردنية (JU)",
+        minRate: 82.0,
+        allowedStream: ["علمي", "أدبي"],
+        creditHours: 132,
+        hourPriceJOD: 35,
+        isJustFeatured: false,
+        description: "تأهيل القادة ورواد الأعمال في استراتيجيات التسويق الحديث، المالية والاستثمار وإدارة المنشآت.",
+        justUrl: "http://ju.edu.jo"
+      },
+
+      // جامعة اليرموك (YU) - إربد
+      {
+        id: "YU-ART-01",
+        code: "YU101",
+        title: "اللغة الإنجليزية والترجمة",
+        faculty: "كلية الآداب",
+        univId: "YU",
+        univName: "جامعة اليرموك (YU)",
+        minRate: 80.0,
+        allowedStream: ["علمي", "أدبي"],
+        creditHours: 132,
+        hourPriceJOD: 25,
+        isJustFeatured: false,
+        description: "تأهيل المترجمين الفوريين والنصوص الأدبية والعلمية مع مختبرات صوتية حديثة.",
+        justUrl: "https://www.yu.edu.jo"
+      },
+      {
+        id: "YU-CYBER-01",
+        code: "YU201",
+        title: "الأمن السيبراني والتحري الرقمي",
+        faculty: "كلية تكنولوجيا المعلومات وعلوم الحاسوب",
+        univId: "YU",
+        univName: "جامعة اليرموك (YU)",
+        minRate: 86.0,
+        allowedStream: ["علمي"],
+        creditHours: 132,
+        hourPriceJOD: 40,
+        isJustFeatured: false,
+        description: "حماية الأنظمة والشبكات واختبار الاختراق والتحقيق في الأدلة الرقمية الجنائية.",
+        justUrl: "https://www.yu.edu.jo"
+      },
+
+      // الجامعة الهاشمية (HU) - الزرقاء
+      {
+        id: "HU-ENG-01",
+        code: "HU101",
+        title: "هندسة العمارة",
+        faculty: "كلية الهندسة",
+        univId: "HU",
+        univName: "الجامعة الهاشمية (HU)",
+        minRate: 87.5,
+        allowedStream: ["علمي", "صناعي"],
+        creditHours: 170,
+        hourPriceJOD: 45,
+        isJustFeatured: false,
+        description: "التصميم المعماري المستدام والتخطيط الحضري وتكنولوجيا البناء الرقمية الحديثة.",
+        justUrl: "https://hu.edu.jo"
+      }
+    ];
+
+    // بيانات الطالب الحالية
+    let currentStudent = {
+      nationalId: "2006981245",
+      seatNumber: "184920",
+      fullName: "أحمد محمد عبد الله الخوالدة",
+      stream: "علمي",
+      score: 96.4,
+      school: "إربد - مدرسة الملك عبد الله الثاني للتميز",
+      isVerified: false
+    };
+
+    // قائمة الرغبات المختارة من الطالب
+    let selectedWishes = [];
+
+    // تحميل عينات سريعة للتجربة (Quick Demo Presets)
+    function loadSampleData(type) {
+      if (type === 'high') {
+        document.getElementById('nationalId').value = "2006981245";
+        document.getElementById('seatNumber').value = "184920";
+        document.getElementById('tawjihiStream').value = "علمي";
+        currentStudent.fullName = "أحمد محمد عبد الله الخوالدة";
+        currentStudent.stream = "علمي";
+        currentStudent.score = 96.4;
+        currentStudent.school = "إربد - مدرسة الملك عبد الله الثاني للتميز";
+      } else if (type === 'mid') {
+        document.getElementById('nationalId').value = "2006123490";
+        document.getElementById('seatNumber').value = "142903";
+        document.getElementById('tawjihiStream').value = "علمي";
+        currentStudent.fullName = "سارة إبراهيم يوسف البطاينة";
+        currentStudent.stream = "علمي";
+        currentStudent.score = 88.5;
+        currentStudent.school = "الرمثا - مدرسة الرمثا الثانوية الشاملة للبنات";
+      } else if (type === 'arts') {
+        document.getElementById('nationalId').value = "2006778899";
+        document.getElementById('seatNumber').value = "209144";
+        document.getElementById('tawjihiStream').value = "أدبي";
+        currentStudent.fullName = "عمر طارق حسن الزعبي";
+        currentStudent.stream = "أدبي";
+        currentStudent.score = 82.0;
+        currentStudent.school = "عمان - كلية الحسين الثانوية للبنين";
+      }
+      fetchTawjihiData();
+    }
+
+    // محاكاة الاستعلام عن التوجيهي
+    function fetchTawjihiData() {
+      const natId = document.getElementById('nationalId').value.trim();
+      const seat = document.getElementById('seatNumber').value.trim();
+      const stream = document.getElementById('tawjihiStream').value;
+
+      if (!natId || natId.length < 9) {
+        alert("يرجى إدخال رقم وطني صحيح ومكون من 10 أرقام.");
+        return;
+      }
+      if (!seat) {
+        alert("يرجى إدخال رقم الجلوس.");
+        return;
+      }
+
+      currentStudent.nationalId = natId;
+      currentStudent.seatNumber = seat;
+      currentStudent.stream = stream;
+      currentStudent.isVerified = true;
+
+      // تحديث عناصر الواجهة
+      document.getElementById('badgeName').innerText = currentStudent.fullName;
+      document.getElementById('badgeStream').innerText = currentStudent.stream + " - دورة صيفية 2026";
+      document.getElementById('badgeScore').innerText = currentStudent.score.toFixed(1) + "%";
+      document.getElementById('badgeSchool').innerText = currentStudent.school;
+
+      document.getElementById('studentBadge').style.display = 'grid';
+      document.getElementById('step1Actions').style.display = 'flex';
+
+      // تحديث شريط الخطوات
+      document.getElementById('step-btn-1').classList.add('completed');
+    }
+
+    // التنقل بين الخطوات
+    function goToStep(stepIndex) {
+      if (stepIndex > 1 && !currentStudent.isVerified) {
+        alert("يرجى التحقق من بيانات التوجيهي أولاً في الخطوة رقم (1) قبل المتابعة.");
+        return;
+      }
+      if (stepIndex === 4 && selectedWishes.length === 0) {
+        alert("يجب اختيار رغبة واحدة على الأقل قبل مراجعة وإرسال الطلب.");
+        return;
+      }
+
+      for (let i = 1; i <= 4; i++) {
+        const section = document.getElementById(`step-section-${i}`);
+        const btn = document.getElementById(`step-btn-${i}`);
+        if (section) section.style.display = (i === stepIndex) ? 'block' : 'none';
+        if (btn) {
+          if (i === stepIndex) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      }
+
+      if (stepIndex === 2) {
+        renderMajorsList(MAJORS_DATABASE);
+      } else if (stepIndex === 3) {
+        renderWishesTable();
+      } else if (stepIndex === 4) {
+        prepareFinalReview();
+      }
+
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    // عرض قائمة التخصصات
+    function renderMajorsList(list) {
+      const container = document.getElementById('majorsContainer');
+      container.innerHTML = "";
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #64748b;">
+            <i class="fa-solid fa-filter-circle-xmark" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+            <p>لا توجد تخصصات مطابقة لمعايير البحث الحالية.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.forEach(m => {
+        const isEligibleScore = currentStudent.score >= m.minRate;
+        const isEligibleStream = m.allowedStream.includes(currentStudent.stream);
+        const isEligible = isEligibleScore && isEligibleStream;
+        const isAlreadySelected = selectedWishes.some(w => w.id === m.id);
+
+        const card = document.createElement('div');
+        card.className = `major-card ${m.isJustFeatured ? 'just-featured' : ''}`;
+
+        card.innerHTML = `
+          <div>
+            <div class="major-header">
+              <span class="univ-tag ${m.univId === 'JUST' ? 'just-tag' : ''}">
+                ${m.univId === 'JUST' ? '<i class="fa-solid fa-star"></i> ' : ''}${m.univName}
+              </span>
+              <span class="min-rate">الحد الأدنى: ${m.minRate}%</span>
+            </div>
+            <h3 class="major-title">${m.title}</h3>
+            <div class="major-faculty"><i class="fa-solid fa-building-columns"></i> ${m.faculty}</div>
+            <p style="font-size: 0.82rem; color: #475569; margin-bottom: 10px; line-height: 1.5;">${m.description}</p>
+          </div>
+
+          <div>
+            <div class="major-card-footer">
+              <span class="hour-price"><i class="fa-solid fa-coins"></i> ${m.hourPriceJOD} دينار / ساعة</span>
+              <button class="btn btn-outline" style="font-size: 0.78rem; padding: 4px 10px;" onclick="openMajorModal('${m.id}')">
+                <i class="fa-solid fa-circle-info"></i> تفاصيل
+              </button>
+            </div>
+
+            <div style="margin-top: 10px;">
+              ${
+                !isEligibleStream ? `
+                  <button class="btn" style="width: 100%; background: #f1f5f9; color: #94a3b8; cursor: not-allowed;" disabled>
+                    <i class="fa-solid fa-ban"></i> غير متاح لفرع ${currentStudent.stream}
+                  </button>
+                ` : !isEligibleScore ? `
+                  <button class="btn" style="width: 100%; background: #fee2e2; color: #991b1b; cursor: not-allowed;" disabled>
+                    <i class="fa-solid fa-triangle-exclamation"></i> المعدل أقل من الحد الأدنى (${m.minRate}%)
+                  </button>
+                ` : isAlreadySelected ? `
+                  <button class="btn btn-outline" style="width: 100%; border-color: #10b981; color: #047857;" onclick="removeWish('${m.id}')">
+                    <i class="fa-solid fa-check"></i> مختار ضمن الرغبات (إلغاء)
+                  </button>
+                ` : `
+                  <button class="btn ${m.univId === 'JUST' ? 'btn-just' : 'btn-primary'}" style="width: 100%;" onclick="addWish('${m.id}')">
+                    <i class="fa-solid fa-plus-circle"></i> إضافة إلى رغباتي
+                  </button>
+                `
+              }
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      updateWishBadges();
+    }
+
+    // فلترة التخصصات
+    function filterMajors() {
+      const search = document.getElementById('filterSearch').value.toLowerCase().trim();
+      const univ = document.getElementById('filterUniv').value;
+
+      const filtered = MAJORS_DATABASE.filter(m => {
+        const matchesUniv = (univ === "ALL") || (m.univId === univ);
+        const matchesSearch = !search ||
+                              m.title.toLowerCase().includes(search) ||
+                              m.faculty.toLowerCase().includes(search) ||
+                              m.univName.toLowerCase().includes(search);
+        return matchesUniv && matchesSearch;
+      });
+
+      renderMajorsList(filtered);
+    }
+
+    function filterJustOnly() {
+      document.getElementById('filterUniv').value = "JUST";
+      filterMajors();
+    }
+
+    // إدارة الرغبات (إضافة / حذف / ترتيب)
+    function addWish(majorId) {
+      if (selectedWishes.length >= 30) {
+        alert("الحد الأقصى لعدد الرغبات المسموح بها هو 30 رغبة.");
+        return;
+      }
+      const major = MAJORS_DATABASE.find(m => m.id === majorId);
+      if (major && !selectedWishes.some(w => w.id === majorId)) {
+        selectedWishes.push(major);
+        updateWishBadges();
+        filterMajors();
+      }
+    }
+
+    function removeWish(majorId) {
+      selectedWishes = selectedWishes.filter(w => w.id !== majorId);
+      updateWishBadges();
+      if (document.getElementById('step-section-2').style.display === 'block') {
+        filterMajors();
+      } else if (document.getElementById('step-section-3').style.display === 'block') {
+        renderWishesTable();
+      }
+    }
+
+    function updateWishBadges() {
+      const count = selectedWishes.length;
+      document.getElementById('wishesCounterBadge').innerText = count;
+      document.getElementById('nextStepCount').innerText = count;
+      const step2Btn = document.getElementById('step-btn-2');
+      if (count > 0) {
+        step2Btn.classList.add('completed');
+      } else {
+        step2Btn.classList.remove('completed');
+      }
+    }
+
+    function moveWish(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= selectedWishes.length) return;
+      const temp = selectedWishes[index];
+      selectedWishes[index] = selectedWishes[newIndex];
+      selectedWishes[newIndex] = temp;
+      renderWishesTable();
+    }
+
+    // عرض جدول ترتيب الرغبات
+    function renderWishesTable() {
+      const emptyNotice = document.getElementById('wishesEmptyNotice');
+      const tableContainer = document.getElementById('wishesTableContainer');
+      const tbody = document.getElementById('wishesTableBody');
+      const btnGoToStep4 = document.getElementById('btnGoToStep4');
+
+      tbody.innerHTML = "";
+
+      if (selectedWishes.length === 0) {
+        emptyNotice.style.display = 'block';
+        tableContainer.style.display = 'none';
+        btnGoToStep4.disabled = true;
+        btnGoToStep4.style.opacity = '0.5';
+        return;
+      }
+
+      emptyNotice.style.display = 'none';
+      tableContainer.style.display = 'block';
+      btnGoToStep4.disabled = false;
+      btnGoToStep4.style.opacity = '1';
+
+      selectedWishes.forEach((w, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="wish-order-badge">${idx + 1}</span></td>
+          <td>
+            <strong>${w.univName}</strong>
+            ${w.univId === 'JUST' ? '<span class="univ-tag just-tag" style="margin-inline-start: 6px;">موصى به</span>' : ''}
+          </td>
+          <td>${w.title} <span style="font-size: 0.8rem; color: #64748b;">(${w.faculty})</span></td>
+          <td><span class="min-rate">${w.minRate}%</span></td>
+          <td>${w.allowedStream.join(" / ")}</td>
+          <td style="text-align: center;">
+            <div class="order-actions">
+              <button class="btn-move" title="تحريك لأعلى" onclick="moveWish(${idx}, -1)" ${idx === 0 ? 'disabled style="opacity:0.3"' : ''}>
+                <i class="fa-solid fa-arrow-up"></i>
+              </button>
+              <button class="btn-move" title="تحريك لأسفل" onclick="moveWish(${idx}, 1)" ${idx === selectedWishes.length - 1 ? 'disabled style="opacity:0.3"' : ''}>
+                <i class="fa-solid fa-arrow-down"></i>
+              </button>
+            </div>
+          </td>
+          <td style="text-align: center;">
+            <button class="action-btn" title="حذف" onclick="removeWish('${w.id}')">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('step-btn-3').classList.add('completed');
+    }
+
+    // إعداد ملخص الشاشة الرابعة
+    function prepareFinalReview() {
+      document.getElementById('summaryStudentName').innerText = currentStudent.fullName;
+      document.getElementById('summaryNationalId').innerText = currentStudent.nationalId;
+      document.getElementById('summaryScore').innerText = currentStudent.score.toFixed(1) + "%";
+      document.getElementById('summaryStream').innerText = currentStudent.stream;
+      document.getElementById('summaryWishesCount').innerText = selectedWishes.length;
+
+      document.getElementById('preSubmitSummary').style.display = 'block';
+      document.getElementById('postSubmitArea').style.display = 'none';
+    }
+
+    // الإرسال النهائي وتوليد حمولة الـ API للتواصل مع المنصة الحسابية الأخرى
+    function submitFinalApplication() {
+      const now = new Date();
+      const timestampIso = now.toISOString();
+      const localTimeString = now.toLocaleString('ar-JO', { dateStyle: 'full', timeStyle: 'medium' });
+
+      // تشكيل كائن الـ Payload النموذجي
+      const payload = {
+        applicationMetadata: {
+          system: "Jordan Unified Admission Front-End Gateway",
+          version: "2026.1-demo",
+          timestamp: timestampIso,
+          submissionChannel: "WEB_PORTAL",
+          clientIpHash: "192.168.10.45",
+          referenceUniversity: "JUST (Jordan University of Science and Technology)"
+        },
+        applicant: {
+          nationalId: currentStudent.nationalId,
+          seatNumber: currentStudent.seatNumber,
+          fullName: currentStudent.fullName,
+          secondarySchoolBranch: currentStudent.stream,
+          gpa: currentStudent.score,
+          graduationYear: 2026,
+          assignedDirectorate: currentStudent.school
+        },
+        orderedPreferences: selectedWishes.map((w, index) => ({
+          priority: index + 1,
+          majorId: w.id,
+          majorCode: w.code,
+          majorTitle: w.title,
+          universityCode: w.univId,
+          universityName: w.univName,
+          college: w.faculty,
+          creditHourCostJOD: w.hourPriceJOD,
+          minimumCutoffRequirement: w.minRate
+        })),
+        engineExecutionFlags: {
+          performAutoScoring: true,
+          applyMilitaryQuota: false,
+          applyTeacherChildrenQuota: false,
+          allowRemoteVerification: true
+        }
+      };
+
+      // عرض النتيجة
+      document.getElementById('receiptNumber').innerText = `ADM-JUST-${Math.floor(100000 + Math.random() * 900000)}`;
+      document.getElementById('submissionTimestamp').innerText = localTimeString;
+      document.getElementById('jsonPayloadDisplay').textContent = JSON.stringify(payload, null, 2);
+
+      document.getElementById('preSubmitSummary').style.display = 'none';
+      document.getElementById('postSubmitArea').style.display = 'block';
+      document.getElementById('step-btn-4').classList.add('completed');
+    }
+
+    // إعادة ضبط الديمو
+    function resetDemo() {
+      selectedWishes = [];
+      updateWishBadges();
+      goToStep(1);
+    }
+
+    // تفاصيل النافذة المنبثقة
+    function openMajorModal(majorId) {
+      const m = MAJORS_DATABASE.find(item => item.id === majorId);
+      if (!m) return;
+
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${m.title}`;
+      document.getElementById('modalBody').innerHTML = `
+        <div style="margin-bottom: 1rem;">
+          <h4 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 4px;">${m.univName}</h4>
+          <p style="color: #64748b; font-size: 0.9rem;">${m.faculty}</p>
+        </div>
+        <p style="margin-bottom: 1.2rem; font-size: 0.95rem; color: #334155; line-height: 1.6;">${m.description}</p>
+        
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1.2rem; font-size: 0.9rem;">
+          <div><strong>الحد الأدنى لمعدل القبول التنافسي:</strong> <span class="min-rate">${m.minRate}%</span></div>
+          <div style="margin-top: 6px;"><strong>الفروع المسموح لها بالتقديم:</strong> ${m.allowedStream.join(" ، ")}</div>
+          <div style="margin-top: 6px;"><strong>عدد الساعات المعتمدة للخطة:</strong> ${m.creditHours} ساعة دراسية</div>
+          <div style="margin-top: 6px;"><strong>رسوم الساعة المعتمدة:</strong> ${m.hourPriceJOD} دينار أردني</div>
+        </div>
+
+        ${m.univId === 'JUST' ? `
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 0.8rem; font-size: 0.88rem; color: #065f46; margin-bottom: 1.2rem;">
+            <i class="fa-solid fa-circle-check"></i> هذا التخصص يتبع كلية رائدة في جامعة العلوم والتكنولوجيا الأردنية المصنفة ضمن أفضل جامعات العالم في تصنيف QS و Times.
+          </div>
+        ` : ''}
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <a href="${m.justUrl}" target="_blank" class="btn btn-outline" style="font-size: 0.85rem;">
+            <i class="fa-solid fa-up-right-from-square"></i> صفحة الكلية في موقع الجامعة
+          </a>
+          <button class="btn btn-primary" onclick="addWish('${m.id}'); closeModal();">
+            <i class="fa-solid fa-plus"></i> إضافة إلى رغباتي
+          </button>
+        </div>
+      `;
+
+      document.getElementById('majorModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('majorModal').classList.remove('open');
+    }
+
+    // إغلاق المودال عند النقر خارج المحتوى
+    window.onclick = function(event) {
+      const modal = document.getElementById('majorModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    // التشغيل المبدئي للنموذج
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchTawjihiData();
+    });
+  </script>
+</body>
+</html>
+
