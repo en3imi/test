@@ -741,8 +741,18 @@
     }
 
     @keyframes chatBlink {
-      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
-      40% { opacity: 1; transform: scale(1.1); }
+
+      0%,
+      80%,
+      100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+      }
+
+      40% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
     }
 
     .ai-chat-quick-replies {
@@ -826,6 +836,7 @@
         width: calc(100vw - 24px);
         height: 75vh;
       }
+
       .ai-chat-launcher {
         bottom: 16px;
         left: 16px;
@@ -1706,7 +1717,8 @@
   </footer>
 
   <!-- ==================== نافذة الشات العائمة (AI Advisor Slot) ==================== -->
-  <div class="ai-chat-launcher" id="aiChatLauncher" onclick="toggleAIChat()" title="المستشار الأكاديمي الذكي / AI Advisor">
+  <div class="ai-chat-launcher" id="aiChatLauncher" onclick="toggleAIChat()"
+    title="المستشار الأكاديمي الذكي / AI Advisor">
     <i class="fa-solid fa-comments"></i>
     <div class="notification-dot"></div>
   </div>
@@ -1736,7 +1748,8 @@
     </div>
 
     <div class="ai-chat-input-area">
-      <input type="text" id="aiChatInput" placeholder="اكتب سؤالك عن القبول والتسجيل..." onkeydown="handleAIChatKey(event)">
+      <input type="text" id="aiChatInput" placeholder="اكتب سؤالك عن القبول والتسجيل..."
+        onkeydown="handleAIChatKey(event)">
       <button class="ai-chat-send-btn" onclick="sendAIChatMessage()" id="aiChatSendBtn" title="إرسال">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
@@ -2616,23 +2629,31 @@
           throw new Error('Server responded with ' + response.status);
         }
 
-        const data = await response.json();
-        // Support common n8n response structures (e.g. { output: "..." }, { text: "..." }, { response: "..." }, or direct string)
+        // Handle both plain text or JSON responses from n8n
+        const responseText = await response.text();
         let reply = '';
-        if (typeof data === 'string') {
-          reply = data;
-        } else if (data.output) {
-          reply = data.output;
-        } else if (data.text) {
-          reply = data.text;
-        } else if (data.response) {
-          reply = data.response;
-        } else if (data.message) {
-          reply = data.message;
-        } else if (Array.isArray(data) && data[0]) {
-          reply = data[0].output || data[0].text || data[0].response || JSON.stringify(data[0]);
-        } else {
-          reply = JSON.stringify(data);
+
+        try {
+          const data = JSON.parse(responseText);
+          console.log('[n8n Response Data]:', data);
+
+          if (typeof data === 'string') {
+            reply = data;
+          } else if (Array.isArray(data) && data.length > 0) {
+            const first = data[0];
+            reply = first.output || first.text || first.response || first.message || first.result || JSON.stringify(first);
+          } else if (typeof data === 'object' && data !== null) {
+            reply = data.output || data.text || data.response || data.message || data.result || data.answer || (data.data && (data.data.output || data.data.text)) || JSON.stringify(data);
+          } else {
+            reply = String(data);
+          }
+        } catch (e) {
+          // If response is not JSON, use the raw text directly
+          reply = responseText;
+        }
+
+        if (!reply || reply.trim() === '') {
+          reply = 'تم استلام طلبك ولكن لم يتم إرجاع نص من نموذج الذكاء الاصطناعي.';
         }
 
         appendChatMessage('bot', reply);
