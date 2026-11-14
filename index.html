@@ -1450,6 +1450,63 @@
 
     <!-- ==================== الخطوة 1: استعلام وبيانات التوجيهي ==================== -->
     <div class="step-content" id="step-section-1">
+
+      <!-- ==================== فتحة البحث في قاعدة البيانات بالاسم فقط عبر n8n Webhook ==================== -->
+      <div class="card" id="nameSearchCard" style="border: 2px solid var(--accent); margin-bottom: 2rem;">
+        <div class="card-header"
+          style="background: linear-gradient(135deg, rgba(197, 155, 39, 0.12) 0%, rgba(11, 37, 69, 0.05) 100%);">
+          <h2 style="color: var(--primary);">
+            <i class="fa-solid fa-user-tag" style="color: var(--accent);"></i>
+            الاستعلام السريع: البحث في قاعدة البيانات بالاسم فقط
+          </h2>
+          <span class="badge"
+            style="background: var(--accent); color: #061527; font-weight: 800; padding: 5px 12px; border-radius: 20px; font-size: 0.78rem;">
+            <i class="fa-solid fa-bolt"></i> n8n Webhook POST
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="alert-box alert-info" style="border-right: 4px solid var(--accent);">
+            <i class="fa-solid fa-circle-question"></i>
+            <div>
+              <strong>ميزة الاستعلام بالاسم فقط:</strong> أدخل اسم الطالب وسيقوم النظام بإرساله عبر الـ Webhook بطريقة
+              <code>POST</code> إلى قاعدة البيانات لاسترجاع بيانات التوجيهي والمعدل تلقائياً دون الحاجة لرقم الجلوس.
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 1rem;">
+            <div style="flex: 1; min-width: 280px; position: relative;">
+              <input type="text" id="studentNameSearchInput" class="form-control"
+                placeholder="اكتب اسم الطالب للبحث... (مثال: أحمد محمد عبد الله الخوالدة)"
+                onkeydown="handleNameSearchKeyDown(event)"
+                style="height: 48px; font-size: 1rem; padding-inline-start: 42px;">
+              <i class="fa-solid fa-user"
+                style="position: absolute; right: 14px; top: 16px; color: var(--accent); font-size: 1.1rem;"></i>
+            </div>
+            <button class="btn btn-primary" id="btnSearchByName" onclick="searchDatabaseByName()"
+              style="height: 48px; padding: 0 24px; font-size: 0.98rem;">
+              <i class="fa-solid fa-magnifying-glass" id="nameSearchIcon"></i>
+              <span id="nameSearchBtnText">بحث في السجلات</span>
+            </button>
+            <button class="btn btn-outline" onclick="clearNameSearch()" style="height: 48px; padding: 0 16px;"
+              title="مسح الحقل">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- تجربة سريعة بالاسم -->
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 1rem;">
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">
+              <i class="fa-solid fa-magnifying-glass" style="color: var(--accent);"></i> تجربة بالاسم:
+            </span>
+            <button class="quick-reply-btn" onclick="fillAndSearchName('احمد')">احمد</button>
+          </div>
+
+          <!-- مساحة عرض نتائج الاستعلام عبر الويب هوك -->
+          <div id="nameSearchResultSlot" style="display: none; margin-top: 1.5rem;"></div>
+
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <h2><i class="fa-solid fa-id-card"></i> الخطوة الأولى: التحقق من بيانات طالب الثانوية العامة (التوجيهي)</h2>
@@ -1515,6 +1572,10 @@
             <div class="badge-field score">
               <span>المعدل المعتمد</span>
               <strong id="badgeScore">96.4%</strong>
+            </div>
+            <div class="badge-field" id="badgeBirthDateField" style="display: none;">
+              <span>تاريخ الميلاد</span>
+              <strong id="badgeBirthDate">--</strong>
             </div>
             <div class="badge-field">
               <span>المحافظة ومدرسة الطالب</span>
@@ -2580,6 +2641,276 @@
 
     function closeModal() {
       document.getElementById('majorModal').classList.remove('open');
+    }
+
+    /* ==================== الاستعلام في قاعدة البيانات بالاسم فقط عبر n8n Webhook ==================== */
+    const N8N_NAME_SEARCH_WEBHOOK_URL = 'https://anything962.app.n8n.cloud/webhook/19218250-fbfd-4069-bb31-3a19d3a5b42c';
+
+    function handleNameSearchKeyDown(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchDatabaseByName();
+      }
+    }
+
+    function fillAndSearchName(name) {
+      const input = document.getElementById('studentNameSearchInput');
+      if (input) {
+        input.value = name;
+        searchDatabaseByName();
+      }
+    }
+
+    function clearNameSearch() {
+      const input = document.getElementById('studentNameSearchInput');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      const slot = document.getElementById('nameSearchResultSlot');
+      if (slot) slot.style.display = 'none';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    async function searchDatabaseByName() {
+      const input = document.getElementById('studentNameSearchInput');
+      const name = input ? input.value.trim() : '';
+
+      if (!name) {
+        alert("يرجى كتابة اسم الطالب أولاً للبحث في قاعدة البيانات.");
+        if (input) input.focus();
+        return;
+      }
+
+      const btn = document.getElementById('btnSearchByName');
+      const btnText = document.getElementById('nameSearchBtnText');
+      const icon = document.getElementById('nameSearchIcon');
+      const resultSlot = document.getElementById('nameSearchResultSlot');
+
+      // حالة التحميل (Loading state)
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = "جاري البحث...";
+      if (icon) icon.className = "fa-solid fa-spinner fa-spin";
+
+      resultSlot.style.display = 'block';
+      resultSlot.innerHTML = `
+        <div style="background: var(--filter-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.6rem; text-align: center;">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.2rem; color: var(--accent); margin-bottom: 0.8rem;"></i>
+          <h4 style="color: var(--primary); margin-bottom: 0.4rem;">جاري الاستعلام في قاعدة البيانات المركزية...</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 4px;">
+            يتم إرسال الاسم <strong>[ ${escapeHtml(name)} ]</strong> بطريقة <code>POST</code> إلى n8n Webhook.
+          </p>
+          <span style="font-size: 0.75rem; color: #94a3b8; font-family: monospace;">POST https://anything962.app.n8n.cloud/webhook/19218250-fbfd-4069-bb31-3a19d3a5b42c</span>
+        </div>
+      `;
+
+      const payload = {
+        name: name,
+        studentName: name,
+        fullName: name,
+        query: name,
+        searchQuery: name,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const response = await fetch(N8N_NAME_SEARCH_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const responseText = await response.text();
+        let parsedData = null;
+        try {
+          parsedData = JSON.parse(responseText);
+        } catch (e) {
+          parsedData = responseText;
+        }
+
+        renderNameSearchResults(name, response.ok, response.status, parsedData);
+
+      } catch (err) {
+        console.error("Error connecting to name search webhook:", err);
+        renderNameSearchResults(name, false, 0, null, err.message);
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.innerText = "بحث في السجلات";
+        if (icon) icon.className = "fa-solid fa-magnifying-glass";
+      }
+    }
+
+    function renderNameSearchResults(searchedName, isOk, statusCode, data, errorMsg) {
+      const slot = document.getElementById('nameSearchResultSlot');
+      if (!slot) return;
+
+      if (!isOk) {
+        slot.innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.05); border: 1.5px solid #ef4444; border-radius: 12px; padding: 1.4rem;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; color: #ef4444;">
+              <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.3rem;"></i>
+              <h4 style="margin: 0; font-size: 1.05rem;">خطأ في الاتصال بالـ Webhook (كود الحالة: ${statusCode || 'فشل الاتصال'})</h4>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.6;">
+              الخادم أرجع الخطأ التالي:<br>
+              <code style="background: rgba(0,0,0,0.06); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-top: 4px; word-break: break-all;">
+                ${escapeHtml(errorMsg || (typeof data === 'string' ? data : JSON.stringify(data)) || 'لا يوجد رد من الخادم')}
+              </code>
+            </p>
+            <button class="btn btn-primary" onclick="searchDatabaseByName()">
+              <i class="fa-solid fa-rotate-right"></i> إعادة المحاولة
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // تحليل البيانات القادمة من n8n
+      let records = [];
+      if (Array.isArray(data)) {
+        records = data;
+      } else if (data && typeof data === 'object') {
+        if (Array.isArray(data.data)) {
+          records = data.data;
+        } else if (Array.isArray(data.output)) {
+          records = data.output;
+        } else if (Array.isArray(data.results)) {
+          records = data.results;
+        } else if (data["الاسم"] !== undefined || data.name !== undefined) {
+          records = [data];
+        }
+      } else if (typeof data === 'string') {
+        try {
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) records = parsed;
+          else if (parsed && typeof parsed === 'object') records = [parsed];
+        } catch (e) { }
+      }
+
+      // تصفية السجلات الصالحة التي تحتوي على بيانات حقيقية
+      const validRecords = records.filter(r => r && typeof r === 'object' && (r["الاسم"] !== undefined || r["المعدل"] !== undefined || r["تاريخ الميلاد"] !== undefined || r.name !== undefined));
+
+      if (validRecords.length === 0) {
+        slot.innerHTML = `
+          <div class="alert-box alert-info" style="border-right: 4px solid var(--accent); margin-bottom: 0;">
+            <i class="fa-solid fa-circle-info"></i>
+            <div>لم يتم العثور على أي نتائج مطابقة للاسم [<strong>${escapeHtml(searchedName)}</strong>] في قاعدة البيانات.</div>
+          </div>
+        `;
+        return;
+      }
+
+      showToastNotification(`تم استرجاع (${validRecords.length}) نتيجة من قاعدة البيانات بنجاح!`);
+
+      // توليد البطاقات لكل سجل تم استرجاعه فعلياً من قاعدة البيانات
+      let html = `
+        <div style="margin-top: 0.5rem;">
+          <div style="font-size: 0.92rem; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-circle-check" style="color: var(--success);"></i>
+            تم العثور على (${validRecords.length}) سجل في قاعدة البيانات:
+          </div>
+      `;
+
+      validRecords.forEach((item, idx) => {
+        const studentName = item["الاسم"] !== undefined ? String(item["الاسم"]) : (item.name || searchedName);
+        const rawScore = item["المعدل"] !== undefined ? item["المعدل"] : (item.score !== undefined ? item.score : "");
+        const scoreNum = parseFloat(rawScore);
+        const scoreDisplay = !isNaN(scoreNum) ? scoreNum.toFixed(1) + "%" : (rawScore ? rawScore + "%" : "--");
+        const birthDate = item["تاريخ الميلاد"] !== undefined ? String(item["تاريخ الميلاد"]) : (item.birthDate || "--");
+        const rowNum = item["row_number"] !== undefined ? item["row_number"] : (item.row_number || (idx + 1));
+
+        html += `
+          <div style="background: var(--card-bg); border: 2px solid var(--success); border-radius: 12px; padding: 1.4rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); animation: modalFadeIn 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px;">
+              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #065f46; border: 1px solid #10b981; padding: 4px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 700;">
+                <i class="fa-solid fa-database"></i> سجل قاعدة البيانات ${rowNum ? `(سطر #${rowNum})` : ''}
+              </span>
+              <span style="font-size: 0.75rem; color: #64748b;">n8n Webhook: 200 OK</span>
+            </div>
+
+            <!-- شبكة عرض الحقول الثلاثة الأساسية المسترجعة من الويبهوك: الاسم، المعدل، تاريخ الميلاد -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; background: var(--filter-bg); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1.2rem;">
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <i class="fa-solid fa-user" style="color: var(--primary);"></i> الاسم:
+                </span>
+                <strong style="color: var(--primary); font-size: 1.25rem;">${escapeHtml(studentName)}</strong>
+              </div>
+
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <i class="fa-solid fa-award" style="color: #eab308;"></i> المعدل:
+                </span>
+                <strong style="color: #059669; font-size: 1.4rem; font-weight: 800;">${scoreDisplay}</strong>
+              </div>
+
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <i class="fa-solid fa-cake-candles" style="color: #ec4899;"></i> تاريخ الميلاد:
+                </span>
+                <strong style="color: var(--text-main); font-size: 1.15rem; font-family: monospace;">${escapeHtml(birthDate)}</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <button class="btn btn-success" style="font-size: 0.95rem; padding: 10px 24px;"
+                onclick="applyFoundStudentData('${escapeHtml(studentName)}', ${!isNaN(scoreNum) ? scoreNum : 0}, '${escapeHtml(birthDate)}')">
+                <i class="fa-solid fa-check-double"></i> اعتماد بيانات الطالب والمتابعة لاختيار الرغبات <i class="fa-solid fa-arrow-left"></i>
+              </button>
+              <button class="btn btn-outline" style="font-size: 0.82rem;" onclick="toggleNameSearchJsonPreview()">
+                <i class="fa-solid fa-code"></i> معاينة JSON المستلم من Webhook
+              </button>
+            </div>
+
+            <pre id="nameSearchJsonPreview" class="api-preview-box" style="display: none; margin-top: 1rem; max-height: 200px; overflow-y: auto;">${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      slot.innerHTML = html;
+    }
+
+    function toggleNameSearchJsonPreview() {
+      const box = document.getElementById('nameSearchJsonPreview');
+      if (box) {
+        box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+      }
+    }
+
+    function applyFoundStudentData(name, score, birthDate) {
+      currentStudent.fullName = name;
+      currentStudent.score = parseFloat(score);
+      currentStudent.birthDate = birthDate;
+      currentStudent.isVerified = true;
+
+      document.getElementById('badgeName').innerText = name;
+      document.getElementById('badgeScore').innerText = Number(score).toFixed(1) + "%";
+
+      const birthDateField = document.getElementById('badgeBirthDateField');
+      const birthDateEl = document.getElementById('badgeBirthDate');
+      if (birthDateField && birthDateEl) {
+        birthDateField.style.display = 'block';
+        birthDateEl.innerText = birthDate;
+      }
+
+      document.getElementById('studentBadge').style.display = 'grid';
+      document.getElementById('step1Actions').style.display = 'flex';
+      document.getElementById('step-btn-1').classList.add('completed');
+
+      showToastNotification(`تم اعتماد بيانات الطالب [${name}] بنجاح!`);
+      goToStep(2);
     }
 
     // رابط استمارة التقديم n8n Form
