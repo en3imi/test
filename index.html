@@ -520,6 +520,318 @@
       color: #ffffff;
     }
 
+    /* ==================== نافذة الشات العائمة (AI Advisor) ==================== */
+    .ai-chat-launcher {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 1050;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, #b0891d 100%);
+      color: #0b2545;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .ai-chat-launcher:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 12px 28px rgba(197, 155, 39, 0.4);
+    }
+
+    .ai-chat-launcher .notification-dot {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      background: #ef4444;
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
+
+    .ai-chat-window {
+      position: fixed;
+      bottom: 96px;
+      left: 24px;
+      width: 380px;
+      max-width: calc(100vw - 48px);
+      height: 540px;
+      max-height: calc(100vh - 120px);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 16px 36px rgba(11, 37, 69, 0.2);
+      display: flex;
+      flex-direction: column;
+      z-index: 1050;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.28s ease;
+    }
+
+    .ai-chat-window.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .ai-chat-header {
+      background: linear-gradient(135deg, #0b2545 0%, #134074 100%);
+      color: #ffffff;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .ai-chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ai-chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0b2545;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .ai-chat-title h4 {
+      font-size: 0.95rem;
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .ai-chat-title span {
+      font-size: 0.75rem;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ai-chat-title span::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+
+    .ai-chat-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ai-chat-btn-lang {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .ai-chat-btn-lang:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .ai-chat-close {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+
+    .ai-chat-close:hover {
+      color: #fff;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: var(--filter-bg);
+      font-size: 0.88rem;
+    }
+
+    .chat-msg {
+      max-width: 84%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      line-height: 1.5;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .chat-msg.bot {
+      align-self: flex-start;
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      background: #0b2545;
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+    }
+
+    body.dark-mode .chat-msg.user {
+      background: #1e3a8a;
+    }
+
+    .chat-msg.typing {
+      align-self: flex-start;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      gap: 5px;
+      padding: 12px 16px;
+    }
+
+    .chat-msg.typing span {
+      width: 7px;
+      height: 7px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: chatBlink 1.4s infinite both;
+    }
+
+    .chat-msg.typing span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .chat-msg.typing span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes chatBlink {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .ai-chat-quick-replies {
+      padding: 6px 12px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      scrollbar-width: none;
+    }
+
+    .ai-chat-quick-replies::-webkit-scrollbar {
+      display: none;
+    }
+
+    .quick-reply-btn {
+      white-space: nowrap;
+      font-size: 0.74rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--filter-bg);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-reply-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .ai-chat-input-area {
+      padding: 10px 12px;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .ai-chat-input-area input {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .ai-chat-input-area input:focus {
+      border-color: var(--primary);
+    }
+
+    .ai-chat-send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .ai-chat-send-btn:hover {
+      background: var(--primary-light);
+    }
+
+    @media (max-width: 480px) {
+      .ai-chat-window {
+        bottom: 84px;
+        left: 12px;
+        width: calc(100vw - 24px);
+        height: 75vh;
+      }
+      .ai-chat-launcher {
+        bottom: 16px;
+        left: 16px;
+      }
+    }
+
     /* بطاقة التوجيهي المسترجعة */
     .student-badge-card {
       background: linear-gradient(135deg, #0b2545 0%, #1e3a8a 100%);
@@ -1393,6 +1705,44 @@
     </div>
   </footer>
 
+  <!-- ==================== نافذة الشات العائمة (AI Advisor Slot) ==================== -->
+  <div class="ai-chat-launcher" id="aiChatLauncher" onclick="toggleAIChat()" title="المستشار الأكاديمي الذكي / AI Advisor">
+    <i class="fa-solid fa-comments"></i>
+    <div class="notification-dot"></div>
+  </div>
+
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+      <div class="ai-chat-header-info">
+        <div class="ai-chat-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div class="ai-chat-title">
+          <h4 id="aiChatHeaderTitle">المستشار الجامعي الذكي</h4>
+          <span id="aiChatHeaderStatus">متصل ومستعد للمساعدة</span>
+        </div>
+      </div>
+      <div class="ai-chat-controls">
+        <button class="ai-chat-btn-lang" onclick="toggleAIChatLang()" id="aiLangToggleBtn">English</button>
+        <button class="ai-chat-close" onclick="toggleAIChat()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <!-- رسالة ترحيبية أولية -->
+    </div>
+
+    <!-- اقتراحات سريعة -->
+    <div class="ai-chat-quick-replies" id="aiChatQuickReplies">
+      <!-- أسئلة مقترحة ديناميكية -->
+    </div>
+
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" placeholder="اكتب سؤالك عن القبول والتسجيل..." onkeydown="handleAIChatKey(event)">
+      <button class="ai-chat-send-btn" onclick="sendAIChatMessage()" id="aiChatSendBtn" title="إرسال">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- ملف المنطق البرمجي وبيانات الديمو التفاعلية -->
   <script>
     // قاعدة بيانات التخصصات المتوفرة (مع التركيز الخاص على جامعة العلوم والتكنولوجيا JUST وأبرز الجامعات الرسمية)
@@ -2081,7 +2431,218 @@
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       fetchTawjihiData();
+      initAIChat();
     });
+
+    /* ==================== منطق روبوت الشات الذكي (n8n AI Agent Integration) ==================== */
+    const N8N_WEBHOOK_URL = 'https://anything962.app.n8n.cloud/webhook/fcc8e514-520c-4823-9356-6876c56abfdb';
+    let aiChatLang = 'ar'; // 'ar' or 'en'
+    let aiSessionId = 'sess_' + Math.random().toString(36).substring(2, 10);
+    let aiChatInitialized = false;
+
+    const AI_I18N = {
+      ar: {
+        title: 'المستشار الجامعي الذكي',
+        status: 'متصل ومستعد للمساعدة',
+        welcome: 'مرحباً بك! أنا مستشارك الذكي للقبول الجامعي. يمكنك سؤالي عن شروط الالتحاق بالجامعات، الحدود الدنيا لمعدلات القبول، أو كيفية ترتيب رغباتك.',
+        placeholder: 'اكتب سؤالك عن القبول والتسجيل...',
+        langBtn: 'English',
+        sendTitle: 'إرسال',
+        errorMsg: 'عذراً، حدث خطأ أثناء الاتصال بمحرك الذكاء الاصطناعي. يرجى المحاولة مرة أخرى لاحقاً.',
+        quickReplies: [
+          'كيف أسجل في جامعة العلوم والتكنولوجيا (JUST)؟',
+          'ما هي الحدود الدنيا للقبول في تخصصات الهندسة؟',
+          'كيف أرتب رغباتي في القبول الموحد؟'
+        ]
+      },
+      en: {
+        title: 'University Admission AI',
+        status: 'Online & ready to help',
+        welcome: 'Hello! I am your AI university advisor. Feel free to ask me anything about university admission criteria, cut-off scores, or how to submit your choices.',
+        placeholder: 'Ask about admission requirements, majors...',
+        langBtn: 'عربي',
+        sendTitle: 'Send',
+        errorMsg: 'Sorry, there was an issue connecting to the AI advisor. Please try again later.',
+        quickReplies: [
+          'How to apply for Jordan University of Science & Tech (JUST)?',
+          'What are the minimum requirements for Engineering?',
+          'How should I prioritize my admission choices?'
+        ]
+      }
+    };
+
+    function initAIChat() {
+      if (aiChatInitialized) return;
+      aiChatInitialized = true;
+      renderAIWelcomeMessage();
+      renderAIQuickReplies();
+    }
+
+    function toggleAIChat() {
+      const chatWin = document.getElementById('aiChatWindow');
+      const launcher = document.getElementById('aiChatLauncher');
+      chatWin.classList.toggle('open');
+
+      const dot = launcher.querySelector('.notification-dot');
+      if (dot && chatWin.classList.contains('open')) {
+        dot.style.display = 'none';
+      }
+
+      if (chatWin.classList.contains('open')) {
+        setTimeout(() => {
+          document.getElementById('aiChatInput').focus();
+        }, 100);
+      }
+    }
+
+    function toggleAIChatLang() {
+      aiChatLang = (aiChatLang === 'ar') ? 'en' : 'ar';
+      updateAIChatUIStrings();
+    }
+
+    function updateAIChatUIStrings() {
+      const strings = AI_I18N[aiChatLang];
+      document.getElementById('aiChatHeaderTitle').innerText = strings.title;
+      document.getElementById('aiChatHeaderStatus').innerText = strings.status;
+      document.getElementById('aiChatInput').placeholder = strings.placeholder;
+      document.getElementById('aiLangToggleBtn').innerText = strings.langBtn;
+      document.getElementById('aiChatSendBtn').title = strings.sendTitle;
+
+      const chatWin = document.getElementById('aiChatWindow');
+      if (aiChatLang === 'en') {
+        chatWin.setAttribute('dir', 'ltr');
+      } else {
+        chatWin.setAttribute('dir', 'rtl');
+      }
+
+      renderAIQuickReplies();
+    }
+
+    function renderAIWelcomeMessage() {
+      const messagesContainer = document.getElementById('aiChatMessages');
+      messagesContainer.innerHTML = '';
+      appendChatMessage('bot', AI_I18N[aiChatLang].welcome);
+    }
+
+    function renderAIQuickReplies() {
+      const container = document.getElementById('aiChatQuickReplies');
+      container.innerHTML = '';
+      AI_I18N[aiChatLang].quickReplies.forEach(question => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-reply-btn';
+        btn.innerText = question;
+        btn.onclick = () => {
+          document.getElementById('aiChatInput').value = question;
+          sendAIChatMessage();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function appendChatMessage(sender, text) {
+      const messagesContainer = document.getElementById('aiChatMessages');
+      const msg = document.createElement('div');
+      msg.className = `chat-msg ${sender}`;
+      msg.textContent = text;
+      messagesContainer.appendChild(msg);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const messagesContainer = document.getElementById('aiChatMessages');
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'chat-msg typing';
+      typingDiv.id = 'aiTypingIndicator';
+      typingDiv.innerHTML = '<span></span><span></span><span></span>';
+      messagesContainer.appendChild(typingDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const typing = document.getElementById('aiTypingIndicator');
+      if (typing) typing.remove();
+    }
+
+    function handleAIChatKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendAIChatMessage();
+      }
+    }
+
+    async function sendAIChatMessage() {
+      const input = document.getElementById('aiChatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      appendChatMessage('user', text);
+      showTypingIndicator();
+
+      // Gather student context if available
+      const nationalId = document.getElementById('nationalId') ? document.getElementById('nationalId').value : '';
+      const seatNumber = document.getElementById('seatNumber') ? document.getElementById('seatNumber').value : '';
+      const stream = document.getElementById('tawjihiStream') ? document.getElementById('tawjihiStream').value : '';
+      const score = document.getElementById('tawjihiScore') ? document.getElementById('tawjihiScore').value : '';
+
+      const payload = {
+        message: text,
+        query: text,
+        chatInput: text,
+        sessionId: aiSessionId,
+        language: aiChatLang,
+        timestamp: new Date().toISOString(),
+        studentContext: {
+          nationalId: nationalId || null,
+          seatNumber: seatNumber || null,
+          stream: stream || null,
+          gpaScore: score || null,
+          wishesSelectedCount: window.selectedWishes ? window.selectedWishes.length : 0
+        }
+      };
+
+      try {
+        const response = await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        removeTypingIndicator();
+
+        if (!response.ok) {
+          throw new Error('Server responded with ' + response.status);
+        }
+
+        const data = await response.json();
+        // Support common n8n response structures (e.g. { output: "..." }, { text: "..." }, { response: "..." }, or direct string)
+        let reply = '';
+        if (typeof data === 'string') {
+          reply = data;
+        } else if (data.output) {
+          reply = data.output;
+        } else if (data.text) {
+          reply = data.text;
+        } else if (data.response) {
+          reply = data.response;
+        } else if (data.message) {
+          reply = data.message;
+        } else if (Array.isArray(data) && data[0]) {
+          reply = data[0].output || data[0].text || data[0].response || JSON.stringify(data[0]);
+        } else {
+          reply = JSON.stringify(data);
+        }
+
+        appendChatMessage('bot', reply);
+
+      } catch (err) {
+        console.error('Error contacting n8n webhook:', err);
+        removeTypingIndicator();
+        appendChatMessage('bot', AI_I18N[aiChatLang].errorMsg);
+      }
+    }
   </script>
 </body>
 
